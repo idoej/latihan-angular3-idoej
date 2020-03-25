@@ -1,0 +1,190 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <ul class="nav nav-tabs nav-fill">
+        <li class="nav-item">
+          <a [ngClass]="(step == STEP.STEP_1) ? 'nav-link active' : 'nav-link'" href="#">STEP 1 - PROFILE</a>
+        </li>
+        <li class="nav-item">
+          <a [ngClass]="(step == STEP.STEP_2) ? 'nav-link active' : 'nav-link'" href="#">STEP 2 - SKILLS</a>
+        </li>
+        <li class="nav-item">
+          <a [ngClass]="(step == STEP.STEP_3) ? 'nav-link active' : 'nav-link'" href="#">STEP 3 - SUMMARY</a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div [hidden]="step !== STEP.STEP_1">
+          <form action="" [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+            <div class="form-group" [ngClass]="{
+                'has-error' : profileForm.get('name').errors
+                  && (profileForm.get('name').touched || profileForm.get('name').dirty || submitted1)
+              }">
+              <label for="name">Name</label>
+              <input type="text" id="name" formControlName="name" class="form-control">
+              <div class="help-block" *ngIf="profileForm.get('name').errors &&
+                  (profileForm.get('name').touched || profileForm.get('name').dirty || submitted1)">
+                <div class="form-text text-danger" *ngIf="profileForm.get('name').errors?.required">
+                  Name is required
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{
+                'has-error' : profileForm.get('email').errors
+                  && (profileForm.get('email').touched || profileForm.get('email').dirty || submitted1)
+              }">
+              <label for="email">Email</label>
+              <input type="text" id="email" formControlName="email" class="form-control">
+              <div class="help-block" *ngIf="profileForm.get('email').errors &&
+                  (profileForm.get('email').touched || profileForm.get('email').dirty || submitted1)">
+                <div class="form-text text-danger" *ngIf="profileForm.get('email').errors?.required">
+                  Email is required
+                </div>
+                <div class="form-text text-danger" *ngIf="profileForm.get('email').errors?.email">
+                  Email is invalid
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{
+                'has-error' : profileForm.get('username').errors
+                  && (profileForm.get('username').touched || profileForm.get('username').dirty || submitted1)
+              }">
+              <label for="name">Username</label>
+              <input type="text" id="username" formControlName="username" class="form-control">
+              <div class="help-block" *ngIf="profileForm.get('username').errors &&
+                  (profileForm.get('username').touched || profileForm.get('username').dirty || submitted1)">
+                <div class="form-text text-danger" *ngIf="profileForm.get('username').errors?.required">
+                  Username is required
+                </div>
+                <div class="form-text text-danger"
+                     *ngIf="profileForm.get('username').errors?.minlength || profileForm.get('username').errors?.maxlength">
+                  Username must be between 3 and 16 characters
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{
+                'has-error' : profileForm.get('country').errors
+                  && (profileForm.get('country').touched || profileForm.get('country').dirty || submitted1)
+              }">
+              <label for="name">Country</label>
+              <select formControlName="country" class="form-control" id="country">
+                <option *ngFor="let c of countryList" [value]="c.id">{{c.name}}</option>
+              </select>
+              <div class="help-block" *ngIf="profileForm.get('country').errors &&
+                  (profileForm.get('country').touched || profileForm.get('country').dirty || submitted1)">
+                <div class="form-text text-danger" *ngIf="profileForm.get('country').errors?.required">
+                  Country is required
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{
+                'has-error' : profileForm.get('age').errors
+                  && (profileForm.get('age').touched || profileForm.get('age').dirty || submitted1)
+              }">
+              <label for="name">Age</label>
+              <input type="text" id="age" formControlName="age" class="form-control">
+              <div class="help-block" *ngIf="profileForm.get('age').errors &&
+                  (profileForm.get('age').touched || profileForm.get('age').dirty || submitted1)">
+                <div class="form-text text-danger" *ngIf="profileForm.get('age').errors?.required || profileForm.get('age').errors?.pattern">
+                  Age is required
+                </div>
+                <div class="form-text text-danger"
+                     *ngIf="profileForm.get('age').errors?.min || profileForm.get('age').errors?.max">
+                  Age must be a number between 0 and 100
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="name">Gender</label>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" formControlName="gender" value="m" id="male">
+                <label class="form-check-label" for="male">Male</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" formControlName="gender" value="f" id="female">
+                <label class="form-check-label" for="female">Female</label>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Next &gt;</button>
+          </form>
+        </div>
+        <div [hidden]="step !== STEP.STEP_2">
+          <div *ngFor="let sk of skills" class="row">
+            <div class="form-group col-md-6"
+                 [ngClass]="{'has-error' : sk.name.errors && (sk.name.touched || sk.name.dirty || submitted2)}">
+              <label>Skill Name</label>
+              <input type="text" class="form-control" [formControl]="sk.name">
+              <div class="help-block" *ngIf="sk.name.errors &&
+                  (sk.name.touched || sk.name.dirty || submitted2)">
+                <div class="form-text text-danger" *ngIf="sk.name.errors?.required">
+                  Skill name is required
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-6"
+                 [ngClass]="{'has-error' : sk.level.errors && (sk.level.touched || sk.level.dirty || submitted2)}">
+              <label>Skill Level</label>
+              <input type="text" class="form-control" [formControl]="sk.level">
+              <div class="help-block" *ngIf="sk.level.errors &&
+                  (sk.level.touched || sk.level.dirty || submitted2)">
+                <div class="form-text text-danger" *ngIf="sk.level.errors?.required || sk.level.errors?.pattern">
+                  Skill level is required
+                </div>
+                <div class="form-text text-danger"
+                     *ngIf="sk.level.errors?.min || sk.level.errors?.max">
+                  Skill level must be between 0-100
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <button type="button" class="btn btn-danger" (click)="backToProfile()">&lt; Prev</button>
+            </div>
+            <div class="col-md-3">
+              <button type="button" class="btn btn-secondary" (click)="addSkill()">Add More +</button>
+            </div>
+            <div class="col-md-3">
+              <button type="button" class="btn btn-primary" (click)="onSubmitSkill()">Next &gt;</button>
+            </div>
+          </div>
+        </div>
+        <div [hidden]="step !== STEP.STEP_3">
+          <div class="row">
+            <div class="col-md-6">
+              <dl class="dl-horizontal">
+                <dt>Name</dt>
+                <dd>{{ profileForm.get('name').value }}</dd>
+                <dt>Email</dt>
+                <dd>{{ profileForm.get('email').value }}</dd>
+                <dt>Username</dt>
+                <dd>{{ profileForm.get('username').value }}</dd>
+                <dt>Country</dt>
+                <dd>{{ countryName }}</dd>
+                <dt>Age</dt>
+                <dd>{{ profileForm.get('age').value }}</dd>
+                <dt>Gender</dt>
+                <dd>{{ profileForm.get('gender').value == 'm' ? 'Male' : 'Female'}}</dd>
+                <dt>Skills</dt>
+                <dd *ngFor="let s of skills">{{ s.name.value }} : {{s.level.value}}</dd>
+              </dl>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <button type="button" class="btn btn-danger" (click)="backToSkill()">&lt; Prev</button>
+            </div>
+            <div class="col-md-3">
+              <button type="button" class="btn btn-primary">Done</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
